@@ -9,8 +9,13 @@ r.register('categories', views.CategoryViewSet)
 r.register('thongtintuyensinhs', views.ThongTinTuyenSinhViewSet)
 r.register('loaithongtintuyensinhs', views.LoaiThongTinTuyenSinhViewSet)
 r.register('users', views.UserViewSet, basename='user')
-
-
+r.register('login', views.LoginUser, basename='login')
+r.register('bannerschool', views.BannerSchool, basename='bannerschool')
+r.register('inforSchool', views.InforSchool, basename='inforSchool')
+r.register('commentoninforschool', views.CommentOnInforSchool, basename='commentOninforschool')
+r.register('standardpointoffaculty', views.StandardPointOfFaculty, basename='standardpointoffaculty')
+r.register('facultymanagerofschool', views.FacultyManagerOfSchool, basename='facultymanagerofschool')
+r.register('facultyofschool', views.FacultyOfSchool, basename='facultyofschool')
 urlpatterns = [
     path('api/', include(r.urls))
 ]
