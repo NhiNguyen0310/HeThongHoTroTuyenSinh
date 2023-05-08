@@ -2,7 +2,7 @@ import hashlib
 
 from rest_framework import serializers
 from .models import ThongTinTuyenSinh, Category, LoaiThongTinTuyenSinh, User, BannerSchool, \
-    CommentOnInforSchool, InforSchool, FacultyManagerOfSchool, FacultyOfSchool, StandardPointOfFaculty
+    CommentOnInforSchool, FacultyOfSchool, StandardPointOfFaculty
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -24,7 +24,7 @@ class ThongTinTuyenSinhSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # image = serializers.SerializerMethodField(source='avatar')
+    avatar = serializers.CharField(required=True)
 
     class Meta:
         model = User
@@ -33,13 +33,6 @@ class UserSerializer(serializers.ModelSerializer):
             'avatar': {'write_only': 'True'},
             'password': {'write_only': 'True'}
         }
-
-    # image = serializers.SerializerMethodField(source='avatar')
-
-    def get_image(self, obj):
-        if obj.avatar:
-            request = self.context.get('request')
-            return request.build_absolute_uri('/static/%s' % obj.avatar.name) if request else ''
 
     def create(self, validated_data):
         data = validated_data.copy()
@@ -53,40 +46,22 @@ class UserSerializer(serializers.ModelSerializer):
 class BannerSchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = BannerSchool
-        fields = ['id', 'img_banner', 'created_date', 'updated_date', 'is_delete']
+        fields = ['id', 'user_id', 'img_banner', 'created_date', 'updated_date', 'is_delete']
 
 
 class CommentOnInforSchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentOnInforSchool
-        fields = ['id', 'user_name', 'content', 'created_date', 'updated_date', 'is_delete']
-
-
-class InforSchoolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = InforSchool
-        fields = ['id', 'user_name', 'title', 'content', 'img', 'is_delete']
-
-
-class FacultyManagerOfSchoolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FacultyManagerOfSchool
-        fields = ['id', 'user_name', 'title', 'content', 'website', 'video']
-
-
-class StandardPointOfFacultySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StandardPointOfFaculty
-        fields = ['id', 'name_faculty', 'content']
-
-
-class FacultyManagerOfSchoolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FacultyManagerOfSchool
-        fields = ['id', 'title', 'content', 'website', 'video', 'standard_point', 'is_delete']
+        fields = ['id', 'user_id', 'content', 'created_date', 'updated_date', 'is_delete', 'thongtintuyensinh']
 
 
 class FacultyOfSchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = FacultyOfSchool
         fields = ['id', 'name', 'infor_faculty', 'operation_day', 'is_delete']
+
+
+class StandardPointOfFacultySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StandardPointOfFaculty
+        fields = ['id', 'content', 'year', 'facultyofschool']

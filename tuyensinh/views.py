@@ -5,11 +5,11 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import Response
 from rest_framework import viewsets, generics, parsers, permissions
-from .models import ThongTinTuyenSinh, Category, LoaiThongTinTuyenSinh, User, BannerSchool, InforSchool, \
-    CommentOnInforSchool, FacultyOfSchool, FacultyManagerOfSchool, StandardPointOfFaculty
+from .models import ThongTinTuyenSinh, Category, LoaiThongTinTuyenSinh, User, BannerSchool, \
+    CommentOnInforSchool, FacultyOfSchool, StandardPointOfFaculty
 from .serializers import ThongTinTuyenSinhSerializer, CategorySerializer, LoaiThongTinTuyenSinhSerializer, \
-    UserSerializer, BannerSchoolSerializer, InforSchoolSerializer, CommentOnInforSchoolSerializer, \
-    FacultyOfSchoolSerializer, FacultyManagerOfSchoolSerializer, StandardPointOfFacultySerializer
+    UserSerializer, BannerSchoolSerializer, CommentOnInforSchoolSerializer, \
+    FacultyOfSchoolSerializer, StandardPointOfFacultySerializer
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from .token import get_tokens_for_user
@@ -53,7 +53,7 @@ class LoginUser(viewsets.ViewSet):
         user = User.objects.get(username=user_name, password=password)
 
         if not user:
-            return Response(data="error", status=400)
+            return Response(data="Incorrect account information", status=400)
 
         # create user format dict
         serializer = UserSerializer(user)
@@ -74,12 +74,6 @@ class BannerSchool(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
 
-class InforSchool(viewsets.ModelViewSet):
-    queryset = InforSchool.objects.all()
-    serializer_class = InforSchoolSerializer
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
-
-
 class CommentOnInforSchool(viewsets.ModelViewSet):
     queryset = CommentOnInforSchool.objects.all()
     serializer_class = CommentOnInforSchoolSerializer
@@ -89,12 +83,6 @@ class CommentOnInforSchool(viewsets.ModelViewSet):
 class StandardPointOfFaculty(viewsets.ModelViewSet):
     queryset = StandardPointOfFaculty.objects.all()
     serializer_class = StandardPointOfFacultySerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class FacultyManagerOfSchool(viewsets.ModelViewSet):
-    queryset = FacultyManagerOfSchool.objects.all()
-    serializer_class = FacultyManagerOfSchoolSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
